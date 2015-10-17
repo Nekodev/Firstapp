@@ -35,8 +35,8 @@ namespace Tasky.Core
 
 				connection.Open ();
 				var commands = new[] {
-					"CREATE TABLE [Items] (_id INTEGER PRIMARY KEY ASC, Name NTEXT, Notes NTEXT, Done INTEGER);"
-				};
+                    "CREATE TABLE [Items] (_id INTEGER PRIMARY KEY ASC, Name NTEXT, Category NTEXT, Notes NTEXT, Done INTEGER);"
+                };
 				foreach (var command in commands) {
 					using (var c = connection.CreateCommand ()) {
 						c.CommandText = command;
@@ -54,7 +54,8 @@ namespace Tasky.Core
 			var t = new Task ();
 			t.ID = Convert.ToInt32 (r ["_id"]);
 			t.Name = r ["Name"].ToString ();
-			t.Notes = r ["Notes"].ToString ();
+            t.Category = r["Category"].ToString();
+            t.Notes = r ["Notes"].ToString ();
 			t.Done = Convert.ToInt32 (r ["Done"]) == 1 ? true : false;
 			return t;
 		}
@@ -67,7 +68,7 @@ namespace Tasky.Core
 				connection = new SqliteConnection ("Data Source=" + path);
 				connection.Open ();
 				using (var contents = connection.CreateCommand ()) {
-					contents.CommandText = "SELECT [_id], [Name], [Notes], [Done] from [Items]";
+					contents.CommandText = "SELECT [_id], [Name], [Category], [Notes], [Done] from [Items]";
 					var r = contents.ExecuteReader ();
 					while (r.Read ()) {
 						tl.Add (FromReader(r));
@@ -85,7 +86,7 @@ namespace Tasky.Core
 				connection = new SqliteConnection ("Data Source=" + path);
 				connection.Open ();
 				using (var command = connection.CreateCommand ()) {
-					command.CommandText = "SELECT [_id], [Name], [Notes], [Done] from [Items] WHERE [_id] = ?";
+					command.CommandText = "SELECT [_id], [Name], [Category], [Notes], [Done] from [Items] WHERE [_id] = ?";
 					command.Parameters.Add (new SqliteParameter (DbType.Int32) { Value = id });
 					var r = command.ExecuteReader ();
 					while (r.Read ()) {
@@ -106,9 +107,10 @@ namespace Tasky.Core
 					connection = new SqliteConnection ("Data Source=" + path);
 					connection.Open ();
 					using (var command = connection.CreateCommand ()) {
-						command.CommandText = "UPDATE [Items] SET [Name] = ?, [Notes] = ?, [Done] = ? WHERE [_id] = ?;";
+						command.CommandText = "UPDATE [Items] SET [Name] = ?, [Category] = ?, [Notes] = ?, [Done] = ? WHERE [_id] = ?;";
 						command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Name });
-						command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Notes });
+                        command.Parameters.Add(new SqliteParameter(DbType.String) { Value = item.Category });
+                        command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Notes });
 						command.Parameters.Add (new SqliteParameter (DbType.Int32) { Value = item.Done });
 						command.Parameters.Add (new SqliteParameter (DbType.Int32) { Value = item.ID });
 						r = command.ExecuteNonQuery ();
@@ -119,9 +121,10 @@ namespace Tasky.Core
 					connection = new SqliteConnection ("Data Source=" + path);
 					connection.Open ();
 					using (var command = connection.CreateCommand ()) {
-						command.CommandText = "INSERT INTO [Items] ([Name], [Notes], [Done]) VALUES (? ,?, ?)";
+						command.CommandText = "INSERT INTO [Items] ([Name], [Category], [Notes], [Done]) VALUES (?, ?, ?, ?)";
 						command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Name });
-						command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Notes });
+                        command.Parameters.Add(new SqliteParameter(DbType.String) { Value = item.Category });
+                        command.Parameters.Add (new SqliteParameter (DbType.String) { Value = item.Notes });
 						command.Parameters.Add (new SqliteParameter (DbType.Int32) { Value = item.Done });
 						r = command.ExecuteNonQuery ();
 					}

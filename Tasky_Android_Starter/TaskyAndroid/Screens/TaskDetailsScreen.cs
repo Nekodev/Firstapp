@@ -14,7 +14,8 @@ namespace TaskyAndroid.Screens {
 		Task task = new Task();
 		Button cancelDeleteButton;
 		EditText notesTextEdit;
-		EditText nameTextEdit;
+        EditText categoryTextEdit;
+        EditText nameTextEdit;
 		Button saveButton;
 
 		protected override void OnCreate (Bundle bundle)
@@ -29,7 +30,8 @@ namespace TaskyAndroid.Screens {
 			// set our layout to be the home screen
 			SetContentView(Resource.Layout.TaskDetails);
 			nameTextEdit = FindViewById<EditText>(Resource.Id.NameText);
-			notesTextEdit = FindViewById<EditText>(Resource.Id.NotesText);
+            categoryTextEdit = FindViewById<EditText>(Resource.Id.CategoryText);
+            notesTextEdit = FindViewById<EditText>(Resource.Id.NotesText);
 			saveButton = FindViewById<Button>(Resource.Id.SaveButton);
 			
 			// find all our controls
@@ -38,8 +40,9 @@ namespace TaskyAndroid.Screens {
 			// set the cancel delete based on whether or not it's an existing task
 			cancelDeleteButton.Text = (task.ID == 0 ? "Cancel" : "Delete");
 			
-			nameTextEdit.Text = task.Name; 
-			notesTextEdit.Text = task.Notes;
+			nameTextEdit.Text = task.Name;
+            categoryTextEdit.Text = task.Category;
+            notesTextEdit.Text = task.Notes;
 
 			// button clicks 
 			cancelDeleteButton.Click += (sender, e) => { CancelDelete(); };
@@ -49,7 +52,8 @@ namespace TaskyAndroid.Screens {
 		void Save()
 		{
 			task.Name = nameTextEdit.Text;
-			task.Notes = notesTextEdit.Text;
+            task.Category = categoryTextEdit.Text;
+            task.Notes = notesTextEdit.Text;
 			TaskManager.SaveTask(task);
 			Finish();
 		}

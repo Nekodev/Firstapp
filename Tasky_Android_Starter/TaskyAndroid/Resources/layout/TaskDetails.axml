@@ -21,11 +21,37 @@
         android:imeOptions="actionNext"
         android:maxLines="1" />
     <TextView
+        android:id="@+id/NameLabel"
+        android:text="Name:"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TaskDetailsHeader" />
+    <EditText
+        android:id="@+id/NameText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/NameLabel"
+        android:imeOptions="actionNext"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/CategoryLabel"
+        android:text="Category:"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/NameText" />
+    <EditText
+        android:id="@+id/CategoryText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CategoryLabel"
+        android:imeOptions="actionNext"
+        android:maxLines="1" />
+    <TextView
         android:id="@+id/NotesLabel"
         android:text="Notes:"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/NameText" />
+        android:layout_below="@+id/CategoryText" />
     <EditText
         android:id="@+id/NotesText"
         android:layout_width="fill_parent"
